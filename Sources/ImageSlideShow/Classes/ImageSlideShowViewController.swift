@@ -119,10 +119,13 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
     delegate = self
     dataSource = self
     hidesBottomBarWhenPushed = true
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismiss(sender:)))
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveToGallery))
-    //	Manage Gestures
+    let image = UIImage(systemName: "xmark")
+    let leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: #selector(dismiss))
+    let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveToGallery))
+    navigationItem.leftBarButtonItem = leftBarButtonItem
+    navigationItem.rightBarButtonItem = rightBarButtonItem
     
+    //	Manage Gestures
     var gestures = gestureRecognizers
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGesture(gesture:)))
     gestures.append(tapGesture)

@@ -11,10 +11,12 @@ class ImageSlideShowNavigationController: UINavigationController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.navigationBar.setBackgroundImage(UIImage(), for: .default)
+    let appearance = UINavigationBarAppearance()
+    appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19), .foregroundColor: UIColor.white]
+    appearance.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+    self.navigationBar.standardAppearance = appearance
+    self.navigationBar.scrollEdgeAppearance = appearance
     self.navigationBar.tintColor = .white
-    self.navigationBar.barTintColor = UIColor.black.withAlphaComponent(0.6)
-    self.navigationBar.shadowImage = UIImage()
     self.navigationBar.isTranslucent = true
     self.view.backgroundColor = .black
   }
