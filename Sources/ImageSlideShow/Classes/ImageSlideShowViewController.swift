@@ -119,9 +119,6 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
     delegate = self
     dataSource = self
     hidesBottomBarWhenPushed = true
-//    navigationController?.navigationBar.tintColor = navigationBarTintColor
-//    navigationController?.navigationBar.barTintColor = .black
-//    navigationController?.view.backgroundColor = .black
     navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismiss(sender:)))
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveToGallery))
     //	Manage Gestures

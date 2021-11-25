@@ -13,7 +13,7 @@ class ImageSlideShowNavigationController: UINavigationController {
     super.viewDidLoad()
     self.navigationBar.setBackgroundImage(UIImage(), for: .default)
     self.navigationBar.tintColor = .white
-    self.navigationBar.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+    self.navigationBar.barTintColor = UIColor.black.withAlphaComponent(0.6)
     self.navigationBar.shadowImage = UIImage()
     self.navigationBar.isTranslucent = true
     self.view.backgroundColor = .black
