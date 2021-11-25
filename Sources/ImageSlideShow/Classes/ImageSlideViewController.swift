@@ -71,7 +71,7 @@ extension ImageSlideViewController {
     if let error = error {
       showAlertWith(title: "error".localized, message: error.localizedDescription)
     } else {
-      showAlertWith(title: nil, message: "successSaved".localized)
+      showAlertWith(title: "", message: "successSaved".localized)
     }
   }
   
