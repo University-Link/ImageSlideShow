@@ -1,0 +1,11 @@
+/* 
+  Localization.strings
+  Demo
+
+  Created by Seungsoo Lee on 2021/11/25.
+  Copyright © 2021 Dimitri Giani. All rights reserved.
+*/
+
+successSaved = "저장되었습니다.";
+error = "오류 알림";
+ok = "확인";

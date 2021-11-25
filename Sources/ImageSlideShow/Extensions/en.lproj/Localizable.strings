@@ -1,0 +1,11 @@
+/* 
+  Localization.strings
+  Demo
+
+  Created by Seungsoo Lee on 2021/11/25.
+  Copyright © 2021 Dimitri Giani. All rights reserved.
+*/
+
+successSaved = "Saved.";
+error = "Error";
+ok = "OK";

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,9 +22,12 @@
         <scene sceneID="SB8-aY-Yrd">
             <objects>
                 <navigationController storyboardIdentifier="ImageSlideShowNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="PJ3-gM-bi3" customClass="ImageSlideShowNavigationController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bdJ-bZ-9av">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="bdJ-bZ-9av">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="qyz-oM-rqY" kind="relationship" relationship="rootViewController" id="HnJ-Um-d5E"/>
@@ -30,25 +35,21 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pal-Tp-RI4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-657" y="-319"/>
+            <point key="canvasLocation" x="-654" y="-321"/>
         </scene>
         <!--Image Slide View Controller-->
         <scene sceneID="xZc-65-CeH">
             <objects>
                 <viewController storyboardIdentifier="ImageSlideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ac2-3e-xTy" customClass="ImageSlideViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="MJ6-VH-Jjs"/>
-                        <viewControllerLayoutGuide type="bottom" id="P3f-r7-4bc"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rX4-OF-GMN">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EIs-p7-gMV">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <subviews>
                                     <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IB1-fE-kMh">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                 </subviews>
@@ -65,17 +66,18 @@
                                 </connections>
                             </scrollView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="cmx-69-4Vi">
-                                <rect key="frame" x="197" y="358" width="20" height="20"/>
+                                <rect key="frame" x="177.66666666666666" y="396" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="lxU-Ka-be9"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="EIs-p7-gMV" secondAttribute="bottom" id="0RG-Sd-Zth"/>
                             <constraint firstItem="EIs-p7-gMV" firstAttribute="top" secondItem="rX4-OF-GMN" secondAttribute="top" id="24a-ig-IyD"/>
-                            <constraint firstAttribute="trailing" secondItem="EIs-p7-gMV" secondAttribute="trailing" id="Rte-Pd-CZ3"/>
+                            <constraint firstItem="lxU-Ka-be9" firstAttribute="trailing" secondItem="EIs-p7-gMV" secondAttribute="trailing" id="Rte-Pd-CZ3"/>
                             <constraint firstItem="cmx-69-4Vi" firstAttribute="centerY" secondItem="rX4-OF-GMN" secondAttribute="centerY" id="X1U-pq-oPe"/>
-                            <constraint firstItem="EIs-p7-gMV" firstAttribute="leading" secondItem="rX4-OF-GMN" secondAttribute="leading" id="Zqd-eO-Zs0"/>
-                            <constraint firstItem="cmx-69-4Vi" firstAttribute="centerX" secondItem="rX4-OF-GMN" secondAttribute="centerX" id="ggs-d0-ZsN"/>
+                            <constraint firstItem="EIs-p7-gMV" firstAttribute="leading" secondItem="lxU-Ka-be9" secondAttribute="leading" id="Zqd-eO-Zs0"/>
+                            <constraint firstItem="cmx-69-4Vi" firstAttribute="centerX" secondItem="lxU-Ka-be9" secondAttribute="centerX" id="ggs-d0-ZsN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="7re-U1-FeW"/>

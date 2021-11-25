@@ -11,7 +11,7 @@ public protocol ImageSlideShowProtocol {
   var title: String? { get }
   
   func slideIdentifier() -> String
-  func image(completion: @escaping (_ image:UIImage?, _ error:Error?) -> Void)
+  func image(completion: @escaping (_ image: UIImage?, _ error: Error?) -> Void)
 }
 
 class ImageSlideShowCache: NSCache<AnyObject, AnyObject> {
@@ -35,7 +35,7 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
   open var panDismissTolerance: CGFloat = 30.0
   open var dismissOnPanGesture: Bool = false
   open var enableZoom: Bool = false
-  open var statusBarStyle: UIStatusBarStyle = .lightContent
+  open var statusBarStyle: UIStatusBarStyle = .darkContent
   open var navigationBarTintColor: UIColor = .white
   open var hideNavigationBarOnAction: Bool = true
   
@@ -119,17 +119,18 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
     delegate = self
     dataSource = self
     hidesBottomBarWhenPushed = true
-    navigationController?.navigationBar.tintColor = navigationBarTintColor
-    navigationController?.view.backgroundColor = .black
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismiss(sender:)))
-    
+//    navigationController?.navigationBar.tintColor = navigationBarTintColor
+//    navigationController?.navigationBar.barTintColor = .black
+//    navigationController?.view.backgroundColor = .black
+    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(dismiss(sender:)))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveToGallery))
     //	Manage Gestures
     
     var gestures = gestureRecognizers
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGesture(gesture:)))
     gestures.append(tapGesture)
     
-    if (dismissOnPanGesture) {
+    if dismissOnPanGesture {
       let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGesture(gesture:)))
       gestures.append(panGesture)
       
@@ -160,6 +161,14 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
     controllerDidDismiss()
   }
   
+  @objc open func saveToGallery() {
+    guard let slideViewController = self.slideViewController(forPageIndex: self.currentIndex) else {
+      print("Image not found!")
+      return
+    }
+    slideViewController.saveToGalleryCurrentImage()
+  }
+  
   open func goToPage(withIndex index: Int) {
     if index != _currentIndex {
       setPage(withIndex: index)
@@ -182,7 +191,7 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
   
   func setPage(withIndex index: Int) {
     if	let viewController = slideViewController(forPageIndex: index) {
-      setViewControllers([viewController], direction: (index > _currentIndex ? .forward : .reverse), animated: true, completion: nil)
+      setViewControllers([viewController], direction: (index > _currentIndex ? .forward: .reverse), animated: true, completion: nil)
       _currentIndex = index
       updateSlideBasedUI()
     }
@@ -329,11 +338,11 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
   
   // MARK: Gestures
   
-  @objc private func tapGesture(gesture:UITapGestureRecognizer) {
+  @objc private func tapGesture(gesture: UITapGestureRecognizer) {
     setNavigationBar(visible: navigationBarHidden == true);
   }
   
-  @objc private func panGesture(gesture:UIPanGestureRecognizer) {
+  @objc private func panGesture(gesture: UIPanGestureRecognizer) {
     let viewController = slideViewController(forPageIndex: currentIndex)
     
     switch gesture.state {
