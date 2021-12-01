@@ -58,7 +58,7 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
   
   fileprivate var originPanViewCenter: CGPoint = .zero
   fileprivate var panViewCenter: CGPoint = .zero
-  fileprivate var navigationBarHidden = false
+  fileprivate var navigationBarHidden: Bool = false
   fileprivate var toggleBarButtonItem: UIBarButtonItem?
   fileprivate var _currentIndex: Int = 0
   fileprivate let slidesViewControllerCache = ImageSlideShowCache()
@@ -126,12 +126,19 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
     navigationItem.rightBarButtonItem = rightBarButtonItem
     
     //	Manage Gestures
-    var gestures = gestureRecognizers
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapGesture(gesture:)))
-    gestures.append(tapGesture)
+    var gestures = self.gestureRecognizers
     
+    let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.doubleTapGesture(_:)))
+    doubleTapGesture.numberOfTapsRequired = 2
+    gestures.append(doubleTapGesture)
+    
+    let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.singleTapGesture(_:)))
+    singleTapGesture.numberOfTapsRequired = 1
+    singleTapGesture.require(toFail: doubleTapGesture)
+    gestures.append(singleTapGesture)
+
     if dismissOnPanGesture {
-      let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGesture(gesture:)))
+      let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.panGesture(_:)))
       gestures.append(panGesture)
       
       //	If dismiss on pan lock horizontal direction and disable vertical pan to avoid strange behaviours
@@ -199,15 +206,24 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
   
   func setNavigationBar(visible: Bool) {
     guard hideNavigationBarOnAction else { return }
-    navigationBarHidden = !visible
-    navigationController?.setNavigationBarHidden(!visible, animated: true)
-    UIView.animate(withDuration: 0.23) { self.setNeedsStatusBarAppearanceUpdate() }
+    guard let view = self.navigationController?.view else { return }
+    self.navigationBarHidden = !visible
+    if visible {
+      self.navigationController?.setNavigationBarHidden(!visible, animated: false)
+    }
+    UIView.transition(
+      with: view,
+      duration: 0.2,
+      options: .transitionCrossDissolve
+    ) {
+      self.navigationController?.setNavigationBarHidden(!visible, animated: false)
+    }
   }
   
   // MARK: UIPageViewControllerDataSource
   
   public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-    self.setNavigationBar(visible: false)
+//    self.setNavigationBar(visible: false)
   }
   
   public func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
@@ -266,9 +282,9 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
         guard let controller = self.storyboard?.instantiateViewController(withIdentifier: "ImageSlideViewController") as? ImageSlideViewController else { fatalError("Unable to instantiate a ImageSlideViewController.") }
         controller.slide = slide
         controller.enableZoom = enableZoom
-        controller.willBeginZoom = {
-          self.setNavigationBar(visible: false)
-        }
+//        controller.willBeginZoom = {
+//          self.setNavigationBar(visible: false)
+//        }
         slidesViewControllerCache.setObject(controller, forKey: slide.slideIdentifier() as AnyObject)
         return controller
       }
@@ -308,7 +324,7 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
         )
       }
     }
-    dismissAnimation = {  viewController, panDirection, completion in
+    dismissAnimation = { viewController, panDirection, completion in
       if let viewController = viewController as? ImageSlideViewController {
         let velocity = panDirection.y
         UIView.animate(
@@ -318,7 +334,7 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
           animations: {
             self.presentingViewController?.view.transform = .identity
             var frame = viewController.imageView?.frame ?? .zero
-            frame.origin.y = (velocity > 0 ? self.view.frame.size.height*2 : -self.view.frame.size.height)
+            frame.origin.y = (velocity > 0 ? self.view.frame.size.height * 2 : -self.view.frame.size.height)
             viewController.imageView?.transform = .identity
             viewController.imageView?.frame = frame
             viewController.imageView?.alpha = 0.0
@@ -335,19 +351,26 @@ open class ImageSlideShowViewController: UIPageViewController, UIPageViewControl
       navigationItem.title = title
     }
   }
+}
   
   // MARK: Gestures
+extension ImageSlideShowViewController: UIGestureRecognizerDelegate {
   
-  @objc private func tapGesture(gesture: UITapGestureRecognizer) {
-    setNavigationBar(visible: navigationBarHidden == true);
+  @objc private func doubleTapGesture(_ gesture: UITapGestureRecognizer) {
+    guard let currentSlideViewController = self.slideViewController(forPageIndex: self.currentIndex) else { return }
+    currentSlideViewController.onDoubleTap()
   }
   
-  @objc private func panGesture(gesture: UIPanGestureRecognizer) {
+  @objc private func singleTapGesture(_ gesture: UITapGestureRecognizer) {
+    self.setNavigationBar(visible: self.navigationBarHidden == true)
+  }
+  
+  @objc private func panGesture(_ gesture: UIPanGestureRecognizer) {
     let viewController = slideViewController(forPageIndex: currentIndex)
     
     switch gesture.state {
       case .began:
-        presentingViewController?.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+//        presentingViewController?.view.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         originPanViewCenter = view.center
         panViewCenter = view.center
         stepAnimate(0, viewController!)
