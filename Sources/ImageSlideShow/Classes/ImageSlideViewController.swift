@@ -27,7 +27,7 @@ class ImageSlideViewController: UIViewController, UIScrollViewDelegate
       self.scrollView?.minimumZoomScale = self.minimumZoomScale
       self.scrollView?.zoomScale = 1.0
 		}
-  
+    self.scrollView?.contentInsetAdjustmentBehavior = .never
     self.scrollView?.isHidden = true
     self.loadingIndicatorView?.startAnimating()
 		
