@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 class ImageSlideViewController: UIViewController, UIScrollViewDelegate
 {
@@ -85,15 +86,35 @@ extension ImageSlideViewController {
   
   @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
     if let error = error {
-      showAlertWith(title: "error".localized, message: error.localizedDescription)
+      let status = PHPhotoLibrary.authorizationStatus()
+      if status == .denied {
+        let message = "이미지를 앨범에 저장할 수 있도록 설정에서 허용해주세요."
+        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        alert.addAction(.init(title: "ok".localized, style: .default, handler: { _ in
+          self.goToSettings()
+        }))
+        alert.addAction(.init(title: "cancel".localized, style: .cancel))
+        self.present(alert, animated: true)
+      } else {
+        showAlertWith(title: "error".localized, message: error.localizedDescription)
+      }
     } else {
       showAlertWith(title: "", message: "successSaved".localized)
     }
   }
   
-  private func showAlertWith(title: String?, message: String) {
+  private func showAlertWith(title: String? = nil, message: String) {
     let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
     ac.addAction(.init(title: "ok".localized, style: .default, handler: nil))
     self.present(ac, animated: true)
+  }
+  
+  func goToSettings() {
+    guard let url = URL(string: UIApplication.openSettingsURLString) else {
+      return
+    }
+    if UIApplication.shared.canOpenURL(url) {
+      UIApplication.shared.open(url, options: [:])
+    }
   }
 }

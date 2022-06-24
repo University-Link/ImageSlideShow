@@ -9,3 +9,4 @@
 successSaved = "저장되었습니다.";
 error = "오류 알림";
 ok = "확인";
+cancel = "취소";

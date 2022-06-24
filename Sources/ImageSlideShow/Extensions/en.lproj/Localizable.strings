@@ -9,3 +9,4 @@
 successSaved = "Saved.";
 error = "Error";
 ok = "OK";
+cancel = "Cancel";
